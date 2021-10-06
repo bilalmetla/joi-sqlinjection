@@ -1,8 +1,12 @@
 {
   "name": "joi-sqlinjection",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Avoid SQL Injection Attack with the help of Joi validator",
   "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +14,11 @@
     "type": "git",
     "url": "git+https://github.com/bilalmetla/joi-sqlinjection.git"
   },
-  "keywords": [],
+  "keywords": [
+    "joi sql injection validation",
+    "joi-sql-injection",
+    "sql injection validation"
+  ],
   "author": "bilalmetla@gmail.com",
   "license": "ISC",
   "bugs": {

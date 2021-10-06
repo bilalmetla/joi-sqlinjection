@@ -19,11 +19,13 @@ module.exports = function (type) {
       name: RULE_NAME,
       params: { args: joi.any().optional() },
       validate: function ({ args }, value, state, options) {
-        let validation = validating(type, value, {...args});
-        if (validation === true) {
+                
+        let isNotValid = validating(type, value, {...args});
+        if (isNotValid === true) {
           let error = `${type}.${RULE_NAME}`
           return this.createError(error, {v: value}, state, options);
         }
+        return value;
               
       },
     }],
