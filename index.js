@@ -7,7 +7,8 @@ const IS_OBJECT_PROTO = '[object Object]';
 const IS_ARRAY_PROTO = '[object Array]';
 const SQL_ERROR_MESSAGE = 'sql and single quote is not allowed';
 const RULE_NAME = 'sqli'
-
+let deepResult = false;
+let injectedValue = '';
 
 /**initial called function from out side. */
 module.exports = function (type) {
@@ -22,8 +23,9 @@ module.exports = function (type) {
                 
         let isNotValid = validating(type, value, {...args});
         if (isNotValid === true) {
+          
           let error = `${type}.${RULE_NAME}`
-          return this.createError(error, {v: value}, state, options);
+          return this.createError(error, {v: injectedValue}, state, options);
         }
         return value;
               
@@ -34,9 +36,13 @@ module.exports = function (type) {
 
 
 const validating = function (type, value, args) {
+  deepResult = false;
+  injectedValue = ''
   if (type === IS_OBJECT || type === IS_ARRAY) {
-    return deep(value, args)
-  }else {          
+    let deepResult  = deep(value, args)
+    return deepResult
+  } else {   
+    injectedValue = value;
     return hasSql(value)
   }
 }
@@ -56,13 +62,20 @@ const is = {
   },
 };
 
-function deep(value, args) {
+
+
+function deep(value, args) {  
 if (is.object(value)) {
   for (const key in value) {
-    if (args.deep && (is.object(value[key]) || is.array(value[key]))) {
+    if ((is.object(value[key]) || is.array(value[key]))) {
       deep(value[key], args);
     } else {
-      return hasSql(value[key])
+      let isSql = hasSql(value[key])
+      if (isSql) {
+        injectedValue = value;
+        deepResult = isSql;
+      }
+
     }
   }
 } else {
@@ -73,5 +86,7 @@ if (is.object(value)) {
       return hasSql(element)
     }
   });
-}
+  }
+  
+  return deepResult
 }

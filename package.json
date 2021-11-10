@@ -1,6 +1,6 @@
 {
   "name": "joi-sqlinjection",
-  "version": "1.0.1",
+  "version": "1.0.6",
   "description": "Avoid SQL Injection Attack with the help of Joi validator",
   "main": "index.js",
   "directories": {
